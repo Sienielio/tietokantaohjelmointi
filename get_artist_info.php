@@ -10,7 +10,7 @@ $artist_id = 1; // Voit vaihtaa tähän halutun artistin id:n
 $query = "SELECT Name FROM artists WHERE ArtistId = ?";
 $stmt = $dbcon->prepare($query);
 $stmt->execute([$artist_id]);
-$albums = $stmt->fetch(PDO::FETCH_ASSOC);
+$albums1 = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // Haetaan artistin albumit ja kappaleet
 $query = "SELECT albums.Title AS album_title, tracks.Name AS track_name   
@@ -21,10 +21,10 @@ $query = "SELECT albums.Title AS album_title, tracks.Name AS track_name
 
 $stmt = $dbcon->prepare($query);
 $stmt->execute([$artist_id]);
-$albums = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$albums2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $result = array(
-    "artist" => $artist_id["Name"],
+    "artist" => $albums,
     "albums" => array()
 );
 $curret_album = null;
@@ -37,8 +37,8 @@ foreach ($albums as $album) {
 }
 
 $response = array(
-    "artist_name" => $artist_id["Name"],
-    "albums" => $albums
+    "artist_name" => $albums1,
+    "albums" => $albums2
 );
 
 echo json_encode($response);
